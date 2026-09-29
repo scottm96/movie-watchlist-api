@@ -4,6 +4,7 @@ import { connectDB, disconnectDB } from './config/db.js';
 
 //Import Routes
 import movieRoutes from "./routes/movieRoutes.js";
+import authRoutes from "./routes/authRoutes.js"
 
 config()
 connectDB()
@@ -11,8 +12,13 @@ connectDB()
 const app = express();
 
 
+//body parsing middleware
+app.use(express.json());
+app.use(express.urlencoded({extended: true}));
+
 // APIRoutes
 app.use("/movies", movieRoutes)
+app.use("/auth", authRoutes)
 
 
 const PORT = 5001;

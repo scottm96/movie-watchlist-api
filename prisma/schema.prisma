@@ -10,10 +10,14 @@ generator client {
 model User {
   id        String      @id @default(uuid())
   name      String?
-  email     String   @unique
+  email     String   @unique 
   password  String
 
   createdAt DateTime @default(now())
+
+  //relations
+  movies          Movie[]   @relation("MovieCreator")
+  watchlistItems  WatchlistItem[]
 }
 
 model Movie {
@@ -27,7 +31,9 @@ model Movie {
   createdBy       String
   createdAt       DateTime    @default(now())
 
-  creator User     @relation("MovieCreator"fields: [createdBy], references: [id], onDelete: Cascade)
+  //relations
+  creator User     @relation("MovieCreator", fields: [createdBy], references: [id], onDelete: Cascade)
+  watchlistItems WatchlistItem[]
 }
 
 model WatchlistItem {
@@ -40,6 +46,8 @@ model WatchlistItem {
   createdAt       DateTime    @default(now())
   UpdatedAt       DateTime    @default(now())
 
+
+  //relations
   user User     @relation(fields: [userId], references: [id], onDelete: Cascade)
   movie Movie     @relation(fields: [movieId], references: [id], onDelete: Cascade)
 }
