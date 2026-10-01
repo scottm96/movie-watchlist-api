@@ -1,8 +1,16 @@
-import { PrismaClient } from "@prisma/client";
+import 'dotenv/config'
+import { PrismaClient } from "../src/generated/prisma/client.ts";
+import { PrismaPg } from '@prisma/adapter-pg'
 
-const prisma = new PrismaClient()
+const adapter = new PrismaPg({
+  connectionString: process.env.DATABASE_URL,
+});
 
-const creatorId = "ef1ff33e-7aea-4666-99ef-360a7577d14c"
+const prisma = new PrismaClient({
+    adapter,
+});
+
+const userId = "ef1ff33e-7aea-4666-99ef-360a7577d14c"
 
 const movies = [
   {
@@ -105,7 +113,7 @@ const main = async () => {
     console.log("seeding movies")
 
     for  (const movie of movies) {
-        await prisma.create({
+        await prisma.movie.create({
             data : movie
         });
         console.log(`created movie: ${movie.title}`)
